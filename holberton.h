@@ -1,36 +1,45 @@
-#ifndef HOLBERTON_H
-#define HOLBERTON_H
+#ifndef _HOLBERTON_H
+#define _HOLBERTON_H
 
-#include <stdarg.h>
-#include <stddef.h>
+#define SIZE 2048
+
 #include <stdlib.h>
+#include <stdarg.h>
+#include <unistd.h>
+#include <stdio.h>
+#include <string.h>
+#include <limits.h>
+
+int _printf(const char *format, ...);
+int (*format_type(char *s))(va_list vlist, char *output_p, int o_p);
+int print_percent(va_list vlist, char *output_p, int o_p);
+int print_char(va_list vlist, char *output_p, int o_p);
+int s_trlen(char *str);
+int print_string(va_list vlist, char *output_p, int o_p);
+int print_numbers(int n, char *output_p, int o_p);
+int print_int(va_list vlist, char *output_p, int o_p);
+int print_single_int(va_list vlist, char *output_p, int o_p);
+int print_octal(va_list vlist, char *output_p, int o_p);
+int print_unumber(va_list vlist, char *output_p, int o_p);
+int print_hexa(va_list vlist, char *output_p, int o_p);
+int print_HEXA(va_list vlist, char *output_o, int o_p);
+int print_HEXA_S(char s, char *output_p, int o_p);
+int print_S_string(va_list vlist, char *output_p, int o_p);
+int print_paddress(va_list vlist, char *output_p, int o_p);
+int print_rot13(va_list vlist, char *output_p, int o_p);
 
 /**
- * struct structprint - structure containing
- * @q: the location and method to translate data to characters.
- * @u: print function for specific type.
+ * struct t_format - Struct t_format
  *
- * Return: int
+ * @character: the class
+ * @func: pointer to a function
+ *
+ * Description: the structure for the format type
  */
-typedef struct structprint
+typedef struct t_format
 {
-	char *q;
-	int (*u)(char *format, va_list);
-} structype;
+	char *character;
+	int (*func)(va_list vlist, char *output_p, int o_p);
+} t_f;
 
-int _putchar(char ch);
-int _puts(char *string);
-int printc(char *format, va_list);
-int printstr(char *format, va_list);
-int (*driver(char *format))(char *format, va_list);
-int _printf(char *format, ...);
-int printint(char *format, va_list pa);
-int integer(int number);
-int contadordigit(int number);
-int _abs(int number);
-int printpercent(char *format, va_list pa);
-int printhex(char *format, va_list);
-int printHEX(char *format, va_list);
-int printocta(char *format, va_list);
-int print_unsign(char *format, va_list);
 #endif

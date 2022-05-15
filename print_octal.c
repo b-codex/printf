@@ -1,59 +1,30 @@
-#include "main.h"
-
+#include "holberton.h"
 /**
- * treat_flags_o - treat flags
- * @flags: string of flags
- * @buffer: to store result
- * @pos: size of buffer
- *
- */
-void treat_flags_o(char *flags, char *buffer, int *pos)
+* print_octal - Print octal
+* @vlist: arguments passed to print
+* @output_p: Host output
+* @o_p: output position
+*
+* Description: Fuction that print octal
+* Return: the int
+*/
+int print_octal(va_list vlist, char *output_p, int o_p)
 {
-	int i;
+unsigned int decimal, result;
+int x, y = 0;
+char octal[100];
 
-	for (i = 0; flags && flags[i]; i++)
-	{
-		if (flags[i] == '#')
-			buffer[(*pos)++] = '0';
-	}
+decimal = va_arg(vlist, unsigned int);
+if (decimal == 0)
+	octal[y++] = 48;
+while (decimal)
+{
+	result = decimal % 8;
+	if (result < 8)
+		octal[y++] = 48 + result;
+	decimal = decimal / 8;
 }
-
-/**
- * print_octal - print usigned decimal as octal
- * @modif: struct containig modifier fields
- * @ap: va_list pointer containig unsigned int to print
- *
- * Return: number of printed characters
- */
-
-char *print_octal(modifier_t *modif, va_list ap)
-{
-	unsigned int n;
-	int i = 0, j = 0;
-	char buffer[11], *res_str;
-
-	if (!ap || !modif || modif->specifier != 'o')
-		return (NULL);
-	n = va_arg(ap, unsigned int);
-	if (n == 0)
-	{
-		j = 1;
-		res_str = malloc(sizeof(char) * 2);
-		res_str[0] = '0';
-	}
-	else
-	{
-		while (n)
-		{
-			buffer[i++] = (n % 8) + '0';
-			n = n / 8;
-		}
-		treat_flags_o(modif->flags, buffer, &i);
-		res_str = malloc(sizeof(char) * i);
-		i--;
-		while (i >= 0)
-			res_str[j++] = buffer[i--];
-	}
-	res_str[j] = '\0';
-	return (res_str);
+for (x = y; x > 0; x--, o_p++)
+	output_p[o_p] = octal[x - 1];
+return (o_p);
 }

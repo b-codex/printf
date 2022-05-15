@@ -1,50 +1,43 @@
 #include "holberton.h"
-
 /**
- * _printf - prints formatted data to stdout
- * @format: string that contains the format to print
- * Return: number of characters written
+ * _printf - Print all this parameters
+ * @format: input
+ *
+ * Description: function that prints output
+ *
+ * Return: The output character or num
  */
-int _printf(char *format, ...)
+int _printf(const char *format, ...)
 {
-	int written = 0, (*structype)(char *, va_list);
-	char q[3];
-	va_list pa;
+	int x = 0, o_p = 0;
+	char *ptr = (char *) format, *output_p;
+	int (*ptr_func)(va_list, char *, int);
+	va_list vlist;
 
-	if (format == NULL)
+	if (!format)
 		return (-1);
-	q[2] = '\0';
-	va_start(pa, format);
-	_putchar(-1);
-	while (format[0])
+	va_start(vlist, format);
+	output_p = malloc(sizeof(char) * SIZE);
+	if (!output_p)
+		return (1);
+	while (format[x])
 	{
-		if (format[0] == '%')
+		if (format[x] != '%')
+			output_p[o_p] = format[x], o_p++;
+		else if (s_trlen(ptr) != 1)
 		{
-			structype = driver(format);
-			if (structype)
-			{
-				q[0] = '%';
-				q[1] = format[1];
-				written += structype(q, pa);
-			}
-			else if (format[1] != '\0')
-			{
-				written += _putchar('%');
-				written += _putchar(format[1]);
-			}
+			ptr_func = format_type(++ptr);
+			if (!ptr_func)
+				output_p[o_p] = format[x], o_p++;
 			else
-			{
-				written += _putchar('%');
-				break;
-			}
-			format += 2;
+				o_p = ptr_func(vlist, output_p, o_p), x++;
 		}
 		else
-		{
-			written += _putchar(format[0]);
-			format++;
-		}
+			o_p = -1;
+		x++, ptr++;
 	}
-	_putchar(-2);
-	return (written);
+	va_end(vlist);
+	write(1, output_p, o_p);
+	free(output_p);
+	return (o_p);
 }
