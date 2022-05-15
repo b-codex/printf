@@ -1,43 +1,83 @@
-#include "holberton.h"
+#include <unistd.h>
+#include "main.h"
+#include <stdio.h>
+
 /**
- * _printf - Print all this parameters
- * @format: input
+ * buffer_print - print given buffer to stdout
+ * @buffer: buffer to print
+ * @num_bytes: number of bytes to print
  *
- * Description: function that prints output
+ * Return: nbytes
+ */
+int buffer_print(char buffer[], unsigned int num_bytes)
+{
+	write(1, buffer, num_bytes);
+	return (num_bytes);
+}
+
+/**
+ * buffer_add - adds a string to buffer
+ * @buffer: buffer to fill
+ * @str: str to add
+ * @buffer_pos: pointer to buffer first empty position
  *
- * Return: The output character or num
+ * Return: if buffer filled and emptyed return number of printed char
+ * else 0
+ */
+int buffer_add(char buffer[], char *str, unsigned int *buffer_pos)
+{
+	int i = 0;
+	unsigned int count = 0, pos = *buffer_pos, size = BUFFER_SIZE;
+
+	while (str && str[i])
+	{
+		if (pos == size)
+		{
+			count += buffer_print(buffer, pos);
+			pos = 0;
+		}
+		buffer[pos++] = str[i++];
+	}
+	*buffer_pos = pos;
+	return (count);
+}
+
+/**
+ * _printf - produces output according to a format
+ * @format: character string
+ *
+ * Return: the number of characters printed excluding the null byte
+ * used to end output to strings
  */
 int _printf(const char *format, ...)
 {
-	int x = 0, o_p = 0;
-	char *ptr = (char *) format, *output_p;
-	int (*ptr_func)(va_list, char *, int);
-	va_list vlist;
+	va_list ap;
+	unsigned int i = 0, buffer_pos = 0, count = 0;
+	char *res_str, *aux, buffer[BUFFER_SIZE];
 
-	if (!format)
+	if (!format || !format[0])
 		return (-1);
-	va_start(vlist, format);
-	output_p = malloc(sizeof(char) * SIZE);
-	if (!output_p)
-		return (1);
-	while (format[x])
+	va_start(ap, format);
+	aux = malloc(sizeof(char) * 2);
+	while (format && format[i])
 	{
-		if (format[x] != '%')
-			output_p[o_p] = format[x], o_p++;
-		else if (s_trlen(ptr) != 1)
+		if (format[i] == '%')
 		{
-			ptr_func = format_type(++ptr);
-			if (!ptr_func)
-				output_p[o_p] = format[x], o_p++;
-			else
-				o_p = ptr_func(vlist, output_p, o_p), x++;
+			res_str = treat_format(format, &i, ap);
+			count += buffer_add(buffer, res_str, &buffer_pos);
+			free(res_str);
 		}
 		else
-			o_p = -1;
-		x++, ptr++;
+		{
+			aux[0] = format[i++];
+			aux[1] = '\0';
+			count += buffer_add(buffer, aux, &buffer_pos);
+		}
 	}
-	va_end(vlist);
-	write(1, output_p, o_p);
-	free(output_p);
-	return (o_p);
+	count += buffer_print(buffer, buffer_pos);
+	free(aux);
+	va_end(ap);
+	if (!count)
+		count = -1;
+	return (count);
 }

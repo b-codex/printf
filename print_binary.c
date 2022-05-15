@@ -1,64 +1,40 @@
-#include "holberton.h"
-char *p_binary(int n);
+#include "main.h"
+
 /**
- * print_binary - Print binary
- * @vlist: argument passed to print
- * @output_p: Host output
- * @o_p: Output position
+ * print_binary - print unsigned int as a binary
+ * @modif: struct containing modifier fields
+ * @ap: va_list pointer containing unsigned int to convert and print
  *
- * Description: print number
- * Return: 0
+ * Return: number of printed charachters
  */
-int print_binary(va_list vlist, char *output_p, int o_p)
+
+char *print_binary(modifier_t *modif, va_list ap)
 {
-	int x, y = 0;
-	char *ptr;
+	unsigned int n;
+	int i = 0, j = 0;
+	char binary[35], *res_str;
 
-	x = va_arg(vlist, int);
-	ptr = p_binary(x);
-
-	for (; ptr[y]; y++, o_p++)
-		output_p[o_p] = ptr[y];
-	return (o_p);
-}
-/**
- * p_binary - Print %
- * @n: number for convert
- *
- * Description: return a binary
- * Return: 0
- */
-char *p_binary(int n)
-{
-	int a, b, count, flag = 0;
-	char *point, *zero = "0";
-
-	count = 0;
+	if (!ap || !modif || modif->specifier != 'b')
+		return (0);
+	n = va_arg(ap, unsigned int);
 	if (n == 0)
-		return (zero);
-	point = (char *)malloc(33);
-	if (!point)
-		exit(EXIT_FAILURE);
-	for (a = 31; a >= 0; a--)
 	{
-		b = n >> a;
-		if (b & 1)
-			*(point + count) = 1 + '0';
-		else
-			*(point + count) = 0 + '0';
-		count++;
+		j = 1;
+		res_str = malloc(sizeof(char) * 2);
+		res_str[0] = '0';
 	}
-	*(point + count) = '\0';
-	while (point)
+	else
 	{
+		while (n)
 		{
-			if (*point != '0')
-				flag = 1;
-			if (flag == 1)
-				return (point);
-			point++;
+			binary[i++] = '0' + (n % 2);
+			n = n / 2;
 		}
+		res_str = malloc(sizeof(char) * i);
+		i--;
+		while (i >= 0)
+			res_str[j++] = binary[i--];
 	}
-	free(point);
-	return (point);
+	res_str[j] = '\0';
+	return (res_str);
 }

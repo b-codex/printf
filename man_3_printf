@@ -1,92 +1,63 @@
-.TH man 3 _PRINTF "19 JULY 2020" "Holberton School"
 .SH NAME
-.B _Printf
-- _Printf The functions in the _printf family produce output according to a format as described below.
+.B _printf
+- Formatted output conversion.
 .SH SYNOPSIS
-#include "holberton.h"
-.NM _printf Function with one mandatory argument FORMAT.
-int _printf(const char *format, ...);
+.B #include "main.h"
+
+.B int _printf(const char *
+.I format
+.B , ...)
 .SH DESCRIPTION
-The functions in the _printf family produce output according to a format as described below. The functions and write output to stdout; write output to the given output stream; and write to the character string.
-.SH Return Value
-Upon successful return, these functions return the number of characters printe(excluding the null byte used to end output to strings).
-.SH Format of the format string
-The format string is a character string, beginning and ending in its initial shift state, if any. The format string is composed of zero or more directives: ordinary characters (not %), which are copied unchanged to the output stream; an conversion specifications, each of which results in fetching zero or more subsequent arguments. Each conversion specification is introduced by the character %, and ends with a conversion specifier. In between there may be (in this order zero or more flags, an optional minimum field width, an optional precision an an optional length modifier.
-.SH Conversion specifiers.
-The format string is a character string, beginning and ending in its initial shift state, if any.
-.SH %
-The character % is followed by zero or more of the following flags:
-.SH c
-Print a character.
-.SH i
-Print a single integer.
-.SH d
-Print a decimal number.
-.SH s
-Print a string.
-.SH b
-Print a binary.
-.SH r
-Print reverse.
-.SH R
-Print ROT13
-.SH U
-Print an unsigned number
-.SH o
-Print Octal
-.SH x X
-Print hexadecimal
-.SH P
-Print address of a pinter
-.SH EXAMPLES
-Some examples of _printf
+.B _printf()
+Prints to standard output under the control of a 
+.I format
+.SH Return value
+On successful return, these functions return the number of characters printed, excluding the null byte used to end output to strings.
 
-_printf("String:[%s]\n", "I am a string !");
-.PP
-String:[I am a string !]
+If an output error is encountered, a negative value is returned.
+.SH Format
+.TP
+.BR c
+The int argument is converted to an unsigned char, then the resulting character is written
+.TP
+.B s
+The const char * argument is expected to be a pointer to an array of character type (pointer to a string). Characters from the array are written up to a terminating null byte, but do ot include the terminating null byte.
+.TP
+.B S
+Prints a string. Non printable characters are printed as "\x" followed by their ASCII values in two digit hexadecimal
+.TP
+.B d, i
+The int argument is converted to signed decimal notation.
+.TP
+.B x, X
+The unsigned int argument is converted to unsigned lowercase hexadecimal notation(x), or unsigned uppercase hexadecimal notation(X).
+.TP
+.B u
+The unsigned int argument is converted to unsigned decimal notation
+.TP
+.B o, b
+The unsigned int argument is converted to unsigned octal notation(o) or binary notation(b).
+.TP
+.B p
+Address is printed in hexadecimal.
+.TP
+.B r
+Prints a string in reverse.
+.TP
+.B R
+Prints a string converted to rot13
+.TP
+.B %
+A '%' is written but no argument is converted. The complete version specification is '%%'
+.SH EXAMPLE
+#include "main.h"
 
-len = _printf("Let's try to printf a simple sentence.\n");
-.PP
-Length:[39, 39]
-
-_printf("Negative:[%d]\n", -762534);
-.PP
-Negative:[-762534]
-
-_printf("Unsigned:[%u]\n", ui);
-.PP
-Unsigned:[2147484671]
-
-_printf("Unsigned octal:[%o]\n", ui);
-.PP
-Unsigned octal:[20000001777]
-
-_printf("Unsigned hexadecimal:[%x, %X]\n", ui, ui);
-.PP
-Unsigned hexadecimal:[800003ff, 800003FF]
-
-_printf("Character:[%c]\n", 'H');
-.PP
-Character:[H]
-
-_printf("Address:[%p]\n", addr);
-.PP
-Address:[0x7ffe637541f0]
-
-len = _printf("Percent:[%%]\n");
-.PP
-Percent:[%]
-
-_printf("Unknown:[%r]\n");
-.PP
-Len:[12]
-
+_printf("%s", "my name",);
 .SH SEE ALSO
-printf(), scanf(), fprintf(), sprintf(), vfprintf()
-
-.SH AUTHORS
-
-.NM
-Diana Sofia Garcia - https://github.com/Sofiag8
-
-Steffany Naranjo Vargas - https://github.com/steffanynaranjov
+.I printf(3)
+.SH BUGS
+No known bugs.
+.SH AUTHOR
+Seblewongel Petros and Zacchaeus James
+.SH AUTORS CONTACT
+<https://github.com/seblinana> and <https://github.com/Zakawayus>
