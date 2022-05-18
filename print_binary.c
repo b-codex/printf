@@ -1,40 +1,37 @@
 #include "main.h"
 
 /**
- * print_binary - print unsigned int as a binary
- * @modif: struct containing modifier fields
- * @ap: va_list pointer containing unsigned int to convert and print
+ * print_binary - converts an unsigned int to binary
+ * @num: int to be converted
  *
- * Return: number of printed charachters
+ * Return: no of resulting binary characters
  */
-
-char *print_binary(modifier_t *modif, va_list ap)
+int print_binary(unsigned int num)
 {
-	unsigned int n;
-	int i = 0, j = 0;
-	char binary[35], *res_str;
+	int chars_printed = 0, idx = 0;
+	char bin[sizeof(unsigned int) * 8];
 
-	if (!ap || !modif || modif->specifier != 'b')
-		return (0);
-	n = va_arg(ap, unsigned int);
-	if (n == 0)
+	if (num == 0)
 	{
-		j = 1;
-		res_str = malloc(sizeof(char) * 2);
-		res_str[0] = '0';
+		chars_printed += _putchar('0');
+		return (chars_printed);
 	}
-	else
+	if (num == 1)
 	{
-		while (n)
-		{
-			binary[i++] = '0' + (n % 2);
-			n = n / 2;
-		}
-		res_str = malloc(sizeof(char) * i);
-		i--;
-		while (i >= 0)
-			res_str[j++] = binary[i--];
+		chars_printed += _putchar('1');
+		return (chars_printed);
 	}
-	res_str[j] = '\0';
-	return (res_str);
+	while (num > 0)
+	{
+		bin[idx] = '0' + (num % 2);
+		num = num / 2;
+		idx++;
+	}
+	idx--;
+	while (idx >= 0)
+	{
+		chars_printed += _putchar(bin[idx]);
+		idx--;
+	}
+	return (chars_printed);
 }

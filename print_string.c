@@ -1,49 +1,20 @@
-#include"main.h"
+#include "main.h"
 /**
- * _strcpy - copy string to another
- * @dest:dest
- * @src:source
- * Return: string
- */
-char *_strcpy(char *dest, char *src)
+  *print_string - prints string followed by a new line.
+  *@str: - pointer to char.
+  *
+  *Return: - returns int. 
+  */
+int print_string(char *str)
 {
-	int i = 0;
+	int chars_printed = 0;
 
-	while (src[i])
+	if (str == (char *)0)
+		return (print_string("(null)"));
+	while (str && str[chars_printed])
 	{
-		dest[i] = src[i];
-		i++;
+		_putchar(str[chars_printed]);
+		chars_printed++;
 	}
-	dest[i] = '\0';
-	return (dest);
-}
-/**
- * print_string - print a string
- * @modif: struct containing modifier fields
- * @ap: va_list pointer containing a string
- *
- * Return: return pointer of the beginning of string
- */
-char *print_string(modifier_t *modif, va_list ap)
-{
-	char *str;
-	char *res;
-
-	if (!ap || !modif)
-		return (0);
-	str = va_arg(ap, char *);
-	if (str == NULL)
-	{
-		res = malloc(sizeof(char) * 5);
-		res = _strcpy(res, "(null)");
-		return (res);
-	}
-	if (str[0] == '\0')
-		return (NULL);
-	res = malloc(_strlen(str) + 1);
-	if (!res)
-		return (NULL);
-	res = _strcpy(res, str);
-
-	return (res);
+	return (chars_printed);
 }
